@@ -77,7 +77,7 @@ RUN mkdir -p /usr/local/include/google/protobuf && \
     cp -a /tmp/grpc/bazel-grpc/external/com_google_protobuf/src/google/protobuf/. /usr/local/include/google/protobuf/
 
 WORKDIR /tmp
-RUN curl -fsSL "https://github.com/uber/prototool/releases/download/v${uber_prototool_version}/prototool-$(uname -s)-$(uname -m)" \
+RUN curl -fsSL "https://github.com/uber/prototool/releases/download/v${uber_prototool_version}/prototool-Linux-x86_64" \
     -o /usr/local/bin/prototool && \
     chmod +x /usr/local/bin/prototool
 
