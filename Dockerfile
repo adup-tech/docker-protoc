@@ -120,7 +120,8 @@ RUN curl -fsSL "https://github.com/grpc/grpc-web/releases/download/${grpc_web_ve
     chmod +x /tmp/grpc_web_plugin
 
 # Add mypy support
-RUN pip3 install -t /opt/mypy-protobuf mypy-protobuf==${mypy_version}
+RUN pip3 install -t /opt/mypy-protobuf mypy-protobuf==${mypy_version} && \
+    pip3 install -t /opt/protoletariat protoletariat
 
 FROM debian:$debian_version-slim AS protoc-all
 
@@ -188,8 +189,12 @@ COPY --from=build /go/pkg/mod/github.com/mwitkow/go-proto-validators@v${go_mwitk
 
 # Copy mypy
 COPY --from=build /opt/mypy-protobuf/ /opt/mypy-protobuf/
-RUN mv /opt/mypy-protobuf/bin/* /usr/local/bin/
-ENV PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}/opt/mypy-protobuf/"
+COPY --from=build /opt/protoletariat/ /opt/protoletariat/
+
+RUN mv /opt/mypy-protobuf/bin/* /usr/local/bin/ && \
+    mv /opt/protoletariat/bin/* /usr/local/bin/
+
+ENV PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}/opt/mypy-protobuf/:/opt/protoletariat/"
 
 ADD all/entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -200,6 +205,9 @@ ENTRYPOINT [ "entrypoint.sh" ]
 # protoc
 FROM protoc-all AS protoc
 ENTRYPOINT [ "protoc", "-I/opt/include" ]
+
+FROM protoc-all AS protol
+ENTRYPOINT [ "protol" ]
 
 # prototool
 FROM protoc-all AS prototool

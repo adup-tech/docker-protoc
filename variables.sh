@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-BUILDS=("protoc-all")
+BUILDS=("protoc-all" "protoc" "protol")
 DOCKER_REPO=${DOCKER_REPO:-"ghcr.io"}
 NAMESPACE=${NAMESPACE:-"/adup-tech"}
 CONTAINER=${DOCKER_REPO}${NAMESPACE}
