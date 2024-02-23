@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 BUILDS=("protoc-all" "protoc" "protol")
-DOCKER_REPO=${DOCKER_REPO:-"ghcr.io"}
-NAMESPACE=${NAMESPACE:-"/adup-tech"}
+DOCKER_REPO=${DOCKER_REPO:-"224549774031.dkr.ecr.eu-central-1.amazonaws.com"}
+NAMESPACE=${NAMESPACE:-""}
 CONTAINER=${DOCKER_REPO}${NAMESPACE}
 LATEST=${1:true}
 
